@@ -125,6 +125,9 @@ var viewModel = function () {
     self.winText = ko.observable('WELL DONE!');
     self.started = ko.observable(0);
     self.count = ko.observable(0);
+    self.countText = ko.computed(function () {
+        return "Count: " + self.count();
+    });
     self.currentVectorView = ko.observableArray(data.initialVector);
     data.checkCorrectTiles();
     self.correctVectorView = ko.observableArray(data.correctVector);

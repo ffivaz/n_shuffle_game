@@ -23,7 +23,7 @@
 </div>
 
 <div class="flex-parent">
-    <div class="flex-info">Count: <span data-bind="text: count"></span></div>
+    <div class="flex-info" data-bind="text: started() == 1 ? countText : ''"></div>
     <div class="flex-info" id="elapsed"></div>
 </div>
 
