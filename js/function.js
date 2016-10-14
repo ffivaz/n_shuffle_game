@@ -1,6 +1,6 @@
 /**
  * equates function: helps with the comparison of two arrays
- * comes from http://...
+ * comes from http://stackoverflow.com/questions/7837456/how-to-compare-arrays-in-javascript
  */
 if (Array.prototype.equals)
     console.warn("Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.");
@@ -65,6 +65,11 @@ var dataModel = function () {
     }
     self.initialVector.push(null);
 
+    self.correctVector = [];
+    for (var j = 0; j < 16; j++) {
+        self.correctVector.push(0);
+    }
+
     self.currentVector = self.initialVector.slice(0);
     self.shuffleVector = function () {
         self.currentVector.shuffle(self.currentVector);
@@ -94,39 +99,58 @@ var dataModel = function () {
         }
     };
 
+    self.checkCorrectTiles = function () {
+        for (var k = 0; k < self.correctVector.length; k++) {
+            if (self.currentVector[k] == self.initialVector[k]) {
+                self.correctVector[k] = 1;
+            } else {
+                self.correctVector[k] = 0;
+            }
+        }
+    }
+
 };
 
 var viewModel = function () {
 
     var self = this;
 
+    var timer = new Timer();
+    timer.addEventListener('secondsUpdated', function (e) {
+        $('#elapsed').html("Time: " + timer.getTimeValues().toString());
+    });
+
     self.count = ko.observable(0);
-
     self.currentVectorView = ko.observableArray(data.initialVector);
+    data.checkCorrectTiles();
+    self.correctVectorView = ko.observableArray(data.correctVector);
+    self.buttonText = ko.observable('Start');
 
-    self.resetClick = function () {
+    self.buttonClick = function () {
+        self.buttonText('Reset');
         self.count(0);
         data.shuffleVector();
         self.currentVectorView(data.currentVector);
-        $('.flex-child').css('background', 'tomato');
+        data.checkCorrectTiles();
+        self.correctVectorView(data.correctVector);
+        timer.start();
     };
 
     var win = function () {
-        $('.flex-child').css('background', 'green');
+        console.log('win');
+        timer.stop();
     };
 
-    self.tileClick = function (d, e) {
+    self.tileClick = function (d) {
         self.count(self.count() + 1);
         data.aMove(d);
         self.currentVectorView(data.currentVector);
+        data.checkCorrectTiles();
+        self.correctVectorView(data.correctVector);
         if (self.currentVectorView().equals(data.initialVector)) {
             win();
         }
     };
-
-    self.computeID = function (n) {
-        return 'tile' + n;
-    }
 
 };
 

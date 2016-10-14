@@ -2,25 +2,35 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>Réorganiser l'image</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>1to15 - Number shuffle game</title>
 
     <link rel="stylesheet" href="css/style.css">
 
     <script src="js/lib/jquery-3.0.0.min.js"></script>
     <script src="js/lib/knockout-3.4.0.js"></script>
+    <script src="js/lib/easytimer.min.js"></script>
 
 </head>
 <body>
-    <h1>Réorganiser l'image</h1>
+<h1>1to15<br>
+    <small>Number shuffle game</small>
+</h1>
 
-    <div class="flex-parent" data-bind="foreach: currentVectorView">
-        <div class="flex-child" data-bind="text: $data, click: $parent.tileClick, attr: { id: $parent.computeID($data) }"></div>
-    </div>
+<div class="flex-parent" data-bind="foreach: currentVectorView">
+    <div class="flex-child" data-bind="text: $data, click: $parent.tileClick, style: { background: $data == null ? 'grey' : $parent.correctVectorView()[$data - 1] > 0 ? 'green' : 'tomato' }"></div>
+</div>
 
-    <p>
-        <button id="reset" data-bind="click: resetClick">Réinitialiser</button> &nbsp;&nbsp;&nbsp;Count : <span data-bind="text: count"></span>
-    </p>
+<div class="flex-parent">
+    <div class="flex-info">Count: <span data-bind="text: count"></span></div>
+    <div class="flex-info" id="elapsed"></div>
+</div>
 
-    <script src="js/function.js"></script>
+<div class="bottom">
+    <button id="reset" data-bind="text: buttonText, click: buttonClick"></button>
+</div>
+
+<script src="js/function.js"></script>
 </body>
 </html>
