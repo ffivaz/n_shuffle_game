@@ -107,13 +107,28 @@ var dataModel = function () {
                 self.correctVector[k] = 0;
             }
         }
-    }
+    };
 
+    if (typeof localStorage != 'undefined') {
+        self.storeData = true;
+        self.bestScores = localStorage.getItem('best scores');
+        if (self.bestScores == null) {
+            localStorage.setItem('best scores', [0, 0, 0, 0, 0]);
+        }
+        self.bestTimes = localStorage.getItem('best times');
+        if (self.bestTimes == null) {
+            localStorage.setItem('best times', ['0:00:00', '0:00:00', '0:00:00', '0:00:00', '0:00:00']);
+        }
+    } else {
+        console.log('localStorage not supported. Scores will not be stored.');
+        self.storeData = false;
+    }
 };
 
 var viewModel = function () {
 
     $('#over').hide();
+    $('#scores').hide();
 
     var self = this;
 
@@ -144,6 +159,10 @@ var viewModel = function () {
         timer.stop();
         timer.start();
         $('#over').hide();
+    };
+
+    self.scoresClick = function () {
+        $('#scores').show();
     };
 
     var win = function () {

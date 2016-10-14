@@ -29,7 +29,27 @@
 
 <div class="big" id="over" data-bind="text: winText"></div>
 
+<div class="pageOver" id="scores">
+    <h2>Best scores</h2>
+    <ul>
+        <li>123</li>
+        <li>154</li>
+        <li>245</li>
+        <li>399</li>
+        <li>401</li>
+    </ul>
+    <h2>Best times</h2>
+    <ul>
+        <li>0:01:54</li>
+        <li>0:01:54</li>
+        <li>0:01:54</li>
+        <li>0:01:54</li>
+        <li>0:01:54</li>
+    </ul>
+</div>
+
 <div class="bottom">
+    <button id="scores" data-bind="click: scoresClick">Scores</button>
     <button id="reset" data-bind="text: buttonText, click: buttonClick"></button>
 </div>
 
