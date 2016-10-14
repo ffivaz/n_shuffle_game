@@ -113,6 +113,8 @@ var dataModel = function () {
 
 var viewModel = function () {
 
+    $('#over').hide();
+
     var self = this;
 
     var timer = new Timer();
@@ -120,6 +122,8 @@ var viewModel = function () {
         $('#elapsed').html("Time: " + timer.getTimeValues().toString());
     });
 
+    self.winText = ko.observable('WELL DONE!');
+    self.started = ko.observable(0);
     self.count = ko.observable(0);
     self.currentVectorView = ko.observableArray(data.initialVector);
     data.checkCorrectTiles();
@@ -127,18 +131,22 @@ var viewModel = function () {
     self.buttonText = ko.observable('Start');
 
     self.buttonClick = function () {
-        self.buttonText('Reset');
+        self.started(1);
+        self.buttonText('Restart');
         self.count(0);
         data.shuffleVector();
         self.currentVectorView(data.currentVector);
         data.checkCorrectTiles();
         self.correctVectorView(data.correctVector);
+        timer.stop();
         timer.start();
+        $('#over').hide();
     };
 
     var win = function () {
-        console.log('win');
         timer.stop();
+        self.buttonText('Restart');
+        $('#over').show();
     };
 
     self.tileClick = function (d) {
