@@ -19,7 +19,8 @@
 </h1>
 
 <div class="flex-parent" data-bind="foreach: currentVectorView" id="gameCanvas">
-    <div class="flex-child" data-bind="text: $data, click: $parent.started() == 1 ? $parent.tileClick : function(){ }, style: { background: $data == null ? 'grey' : $parent.correctVectorView()[$data - 1] > 0 ? 'green' : 'tomato' }"></div>
+    <div class="flex-child"
+         data-bind="text: $data, click: $parent.started() == 1 ? $parent.tileClick : function(){ }, style: { background: $data == null ? 'grey' : $parent.correctVectorView()[$data - 1] > 0 ? 'green' : 'tomato' }"></div>
 </div>
 
 <div class="flex-parent">
@@ -30,27 +31,23 @@
 <div class="big" id="over" data-bind="text: winText"></div>
 
 <div class="pageOver" id="scores">
-    <h2>Best scores</h2>
-    <ul>
-        <li>123</li>
-        <li>154</li>
-        <li>245</li>
-        <li>399</li>
-        <li>401</li>
+    <h2>Best scores<br>
+        <small>Smaller is better</small>
+    </h2>
+    <ul data-bind="foreach: bestScoresView">
+        <li data-bind="text: $data"></li>
     </ul>
-    <h2>Best times</h2>
-    <ul>
-        <li>0:01:54</li>
-        <li>0:01:54</li>
-        <li>0:01:54</li>
-        <li>0:01:54</li>
-        <li>0:01:54</li>
+    <h2>Best times<br>
+        <small>Smaller is better</small>
+    </h2>
+    <ul data-bind="foreach: bestTimesView">
+        <li data-bind="text: $data"></li>
     </ul>
 </div>
 
 <div class="bottom">
-    <button id="scores" data-bind="click: scoresClick">Scores</button>
-    <button id="reset" data-bind="text: buttonText, click: buttonClick"></button>
+    <button id="scoresBtn" data-bind="click: scoresClick">Scores</button>
+    <button id="resetBtn" data-bind="text: buttonText, click: buttonClick"></button>
 </div>
 
 <script src="js/function.js"></script>

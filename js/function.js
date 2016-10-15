@@ -109,20 +109,52 @@ var dataModel = function () {
         }
     };
 
-    if (typeof localStorage != 'undefined') {
+    if (typeof window.localStorage != 'undefined') {
         self.storeData = true;
-        self.bestScores = localStorage.getItem('best scores');
+        self.bestScores = JSON.parse(localStorage.getItem('best scores'));
         if (self.bestScores == null) {
-            localStorage.setItem('best scores', [0, 0, 0, 0, 0]);
+            self.bestScores = [500, 499, 498, 497, 496];
+            window.localStorage.setItem('best scores', JSON.stringify(self.bestScores));
         }
-        self.bestTimes = localStorage.getItem('best times');
+        self.bestTimes = JSON.parse(localStorage.getItem('best times'));
         if (self.bestTimes == null) {
-            localStorage.setItem('best times', ['0:00:00', '0:00:00', '0:00:00', '0:00:00', '0:00:00']);
+            self.bestTimes = ['1:00:00', '1:00:00', '1:00:00', '1:00:00', '1:00:00'];
+            window.localStorage.setItem('best times', JSON.stringify(self.bestTimes));
         }
     } else {
         console.log('localStorage not supported. Scores will not be stored.');
         self.storeData = false;
     }
+
+    self.checkScore = function (s) {
+        var isBest = 5;
+        var j = 4;
+        while (j >= 0) {
+            if (self.bestScores[j] > s) {
+                isBest = self.bestScores.indexOf(self.bestScores[j]);
+            }
+            j--;
+        }
+        if (isBest == 5) {
+            console.log('No best score, try again!');
+            return;
+        } else {
+            console.log('with a score of ' + s + ', you logged the ' + (isBest + 1) + 'th best score');
+        }
+        var i = 4;
+        while (i > isBest) {
+            self.bestScores[i] = self.bestScores[i - 1];
+            i--;
+        }
+        self.bestScores[isBest] = s;
+
+        window.localStorage.setItem('best scores', JSON.stringify(self.bestScores));
+    };
+
+    self.checkTime = function () {
+
+    };
+
 };
 
 var viewModel = function () {
@@ -146,6 +178,8 @@ var viewModel = function () {
     self.currentVectorView = ko.observableArray(data.initialVector);
     data.checkCorrectTiles();
     self.correctVectorView = ko.observableArray(data.correctVector);
+    self.bestScoresView = ko.observableArray(data.bestScores);
+    self.bestTimesView = ko.observableArray(data.bestTimes);
     self.buttonText = ko.observable('Start');
 
     self.buttonClick = function () {
@@ -162,12 +196,22 @@ var viewModel = function () {
     };
 
     self.scoresClick = function () {
-        $('#scores').show();
+        if ($('#scoresBtn').html() == 'Scores') {
+            $('#scores').show();
+            $('#scoresBtn').html('Close');
+        } else {
+            $('#scores').hide();
+            $('#scoresBtn').html('Scores');
+        }
     };
+
+    data.checkScore(101);
 
     var win = function () {
         timer.stop();
         self.buttonText('Restart');
+        data.checkScore(self.count);
+        self.bestScoresView(data.bestScores);
         $('#over').show();
     };
 
@@ -187,26 +231,3 @@ var viewModel = function () {
 var data = new dataModel();
 
 ko.applyBindings(new viewModel());
-
-/*
- // Détection
- if(typeof localStorage!='undefined') {
- // Récupération de la valeur dans web storage
- var nbvisites = localStorage.getItem('visites');
- // Vérification de la présence du compteur
- if(nbvisites!=null) {
- // Si oui, on convertit en nombre entier la chaîne de texte qui fut stockée
- nbvisites = parseInt(nbvisites);
- } else {
- nbvisites = 1;
- }
- // Incrémentation
- nbvisites++;
- // Stockage à nouveau en attendant la prochaine visite...
- localStorage.setItem('visites',nbvisites);
- // Affichage dans la page
- document.getElementById('visites').innerHTML = nbvisites;
- } else {
- alert("localStorage n'est pas supporté");
- }
- */
