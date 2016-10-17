@@ -116,11 +116,11 @@ var dataModel = function () {
             self.bestScores = [500, 499, 498, 497, 496];
             window.localStorage.setItem('best scores', JSON.stringify(self.bestScores));
         }
-        self.bestTimes = JSON.parse(localStorage.getItem('best times'));
+        /*self.bestTimes = JSON.parse(localStorage.getItem('best times'));
         if (self.bestTimes == null) {
             self.bestTimes = ['1:00:00', '1:00:00', '1:00:00', '1:00:00', '1:00:00'];
             window.localStorage.setItem('best times', JSON.stringify(self.bestTimes));
-        }
+        }*/
     } else {
         console.log('localStorage not supported. Scores will not be stored.');
         self.storeData = false;
@@ -151,10 +151,6 @@ var dataModel = function () {
         window.localStorage.setItem('best scores', JSON.stringify(self.bestScores));
     };
 
-    self.checkTime = function () {
-
-    };
-
 };
 
 var viewModel = function () {
@@ -182,6 +178,10 @@ var viewModel = function () {
     self.bestTimesView = ko.observableArray(data.bestTimes);
     self.buttonText = ko.observable('Start');
 
+    if (data.storeData == false) {
+        $('#scoresBtn').hide();
+    }
+
     self.buttonClick = function () {
         self.started(1);
         self.buttonText('Restart');
@@ -197,15 +197,15 @@ var viewModel = function () {
 
     self.scoresClick = function () {
         if ($('#scoresBtn').html() == 'Scores') {
+            $('#resetBtn').hide();
             $('#scores').show();
             $('#scoresBtn').html('Close');
         } else {
+            $('#resetBtn').show();
             $('#scores').hide();
             $('#scoresBtn').html('Scores');
         }
     };
-
-    data.checkScore(101);
 
     var win = function () {
         timer.stop();
