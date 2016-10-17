@@ -1,0 +1,88 @@
+$font-stack: monospace
+
+$primary-color: #000
+$secondary-color: #fff
+$right-color: #008000
+$wrong-color: #ff6347
+
+body
+  font: 100% $font-stack
+  color: $primary-color
+
+h1
+  text-align: center
+
+.flex-parent 
+  display: flex
+  flex-wrap: wrap
+
+.flex-child 
+  background: $right-color
+  text-align: center
+  width: calc((100vw / 4) - 15px)
+  height: calc((100vw / 4) - 15px)
+  margin: 5px
+
+  color: $secondary-color
+  font-size: 24px
+  font-weight: 700
+  line-height: calc((100vw / 4) - 15px)
+
+.flex-child:hover 
+  cursor: pointer
+
+.flex-info 
+  text-align: center
+  width: 50%
+  margin-top: 30px
+
+button 
+  border: 1px solid $primary-color
+  background-color: $secondary-color
+  padding: 5px
+  width: 100%
+  margin-bottom: 10px
+
+.bottom 
+  position: fixed
+  bottom: 0
+  left: 0
+  width: calc(100% - 20px)
+  height: 70px
+  margin: 10px
+
+.big 
+  position: fixed
+  left: 0
+  top: 0
+  padding-top: 25vh
+  width: 100%
+  height: 100%
+  text-align: center
+  font-size: 12vh
+  line-height: 25vh
+  font-weight: 700
+  background-color: $secondary-color
+  opacity: 0.7
+
+.pageOver
+  position: fixed
+  left: 0
+  top: 100px
+  width: 100%
+  height: 100%
+  text-align: center
+  background-color: $secondary-color
+  opacity: 0.9
+
+  h2
+    font-weight: 700
+    text-align: center
+
+  ul
+    margin: 0
+    padding: 0
+
+  li
+    list-style-type: none
+    font-size: 5vh
