@@ -76,7 +76,6 @@ var dataModel = function () {
     };
 
     self.aMove = function (e) {
-        // test if e has a null neighbour
         if (e == null) {
             return;
         }
@@ -210,7 +209,7 @@ var viewModel = function () {
     var win = function () {
         timer.stop();
         self.buttonText('Restart');
-        data.checkScore(self.count);
+        data.checkScore(self.count());
         self.bestScoresView(data.bestScores);
         $('#over').show();
     };
