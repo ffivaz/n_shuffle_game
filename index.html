@@ -20,7 +20,7 @@
 
 <div class="flex-parent" data-bind="foreach: currentVectorView" id="gameCanvas">
     <div class="flex-child"
-         data-bind="text: $data, click: $parent.started() == 1 ? $parent.tileClick : function(){ }, style: { background: $data == null ? 'grey' : $parent.correctVectorView()[$data - 1] > 0 ? 'green' : 'tomato' }"></div>
+         data-bind="text: $data, event: { click: $parent.started() == 1 ? $parent.tileClick : function(){ }, touchend: $parent.started() == 1 ? $parent.tileClick : function(){ } }, style: { background: $data == null ? 'grey' : $parent.correctVectorView()[$data - 1] > 0 ? 'green' : 'tomato' }"></div>
 </div>
 
 <div class="flex-parent">
