@@ -2,8 +2,9 @@
  * equates function: helps with the comparison of two arrays
  * comes from http://stackoverflow.com/questions/7837456/how-to-compare-arrays-in-javascript
  */
-if (Array.prototype.equals)
+if (Array.prototype.equals) {
     console.warn("Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.");
+}
 Array.prototype.equals = function (array) {
     if (!array)
         return false;
@@ -29,8 +30,9 @@ Object.defineProperty(Array.prototype, "equals", {enumerable: false});
  * shuffle function:
  * comes from http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
  */
-if (Array.prototype.shuffle)
+if (Array.prototype.shuffle) {
     console.warn("Overriding existing Array.prototype.shuffle. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.");
+}
 Array.prototype.shuffle = function (array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -108,20 +110,20 @@ var dataModel = function () {
         }
     };
 
-    if (typeof window.localStorage != 'undefined') {
+    if (typeof window.localStorage != "undefined") {
         self.storeData = true;
-        self.bestScores = JSON.parse(localStorage.getItem('best scores'));
+        self.bestScores = JSON.parse(localStorage.getItem("best scores"));
         if (self.bestScores == null) {
             self.bestScores = [500, 499, 498, 497, 496];
-            window.localStorage.setItem('best scores', JSON.stringify(self.bestScores));
+            window.localStorage.setItem("best scores", JSON.stringify(self.bestScores));
         }
-        /*self.bestTimes = JSON.parse(localStorage.getItem('best times'));
-        if (self.bestTimes == null) {
-            self.bestTimes = ['1:00:00', '1:00:00', '1:00:00', '1:00:00', '1:00:00'];
-            window.localStorage.setItem('best times', JSON.stringify(self.bestTimes));
-        }*/
+        /*self.bestTimes = JSON.parse(localStorage.getItem("best times"));
+         if (self.bestTimes == null) {
+         self.bestTimes = ["1:00:00", "1:00:00", "1:00:00", "1:00:00", "1:00:00"];
+         window.localStorage.setItem("best times", JSON.stringify(self.bestTimes));
+         }*/
     } else {
-        console.log('localStorage not supported. Scores will not be stored.');
+        console.log("localStorage not supported. Scores will not be stored.");
         self.storeData = false;
     }
 
@@ -135,10 +137,10 @@ var dataModel = function () {
             j--;
         }
         if (isBest == 5) {
-            console.log('No best score, try again!');
+            console.log("No best score, try again!");
             return;
         } else {
-            console.log('with a score of ' + s + ', you logged the ' + (isBest + 1) + 'th best score');
+            console.log("with a score of " + s + ", you logged the " + (isBest + 1) + "th best score");
         }
         var i = 4;
         while (i > isBest) {
@@ -147,24 +149,24 @@ var dataModel = function () {
         }
         self.bestScores[isBest] = s;
 
-        window.localStorage.setItem('best scores', JSON.stringify(self.bestScores));
+        window.localStorage.setItem("best scores", JSON.stringify(self.bestScores));
     };
 
 };
 
 var viewModel = function () {
 
-    $('#over').hide();
-    $('#scores').hide();
+    $("#over").hide();
+    $("#scores").hide();
 
     var self = this;
 
     var timer = new Timer();
-    timer.addEventListener('secondsUpdated', function (e) {
-        $('#elapsed').html("Time: " + timer.getTimeValues().toString());
+    timer.addEventListener("secondsUpdated", function (e) {
+        $("#elapsed").html("Time: " + timer.getTimeValues().toString());
     });
 
-    self.winText = ko.observable('WELL DONE!');
+    self.winText = ko.observable("WELL DONE!");
     self.started = ko.observable(0);
     self.count = ko.observable(0);
     self.countText = ko.computed(function () {
@@ -175,15 +177,15 @@ var viewModel = function () {
     self.correctVectorView = ko.observableArray(data.correctVector);
     self.bestScoresView = ko.observableArray(data.bestScores);
     self.bestTimesView = ko.observableArray(data.bestTimes);
-    self.buttonText = ko.observable('Start');
+    self.buttonText = ko.observable("Start");
 
     if (data.storeData == false) {
-        $('#scoresBtn').hide();
+        $("#scoresBtn").hide();
     }
 
     self.buttonClick = function () {
         self.started(1);
-        self.buttonText('Restart');
+        self.buttonText("Restart");
         self.count(0);
         data.shuffleVector();
         self.currentVectorView(data.currentVector);
@@ -191,27 +193,27 @@ var viewModel = function () {
         self.correctVectorView(data.correctVector);
         timer.stop();
         timer.start();
-        $('#over').hide();
+        $("#over").hide();
     };
 
     self.scoresClick = function () {
-        if ($('#scoresBtn').html() == 'Scores') {
-            $('#resetBtn').hide();
-            $('#scores').show();
-            $('#scoresBtn').html('Close');
+        if ($("#scoresBtn").html() == "Scores") {
+            $("#resetBtn").hide();
+            $("#scores").show();
+            $("#scoresBtn").html("Close");
         } else {
-            $('#resetBtn').show();
-            $('#scores').hide();
-            $('#scoresBtn').html('Scores');
+            $("#resetBtn").show();
+            $("#scores").hide();
+            $("#scoresBtn").html("Scores");
         }
     };
 
     var win = function () {
         timer.stop();
-        self.buttonText('Restart');
+        self.buttonText("Restart");
         data.checkScore(self.count());
         self.bestScoresView(data.bestScores);
-        $('#over').show();
+        $("#over").show();
     };
 
     self.tileClick = function (d) {
